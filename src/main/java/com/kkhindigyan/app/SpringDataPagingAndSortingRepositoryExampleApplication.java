@@ -8,10 +8,12 @@ import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 
+import com.kkhindigyan.app.dao.UserPagingAndSortingRepository;
 import com.kkhindigyan.app.entities.User;
 
 @SpringBootApplication
@@ -22,14 +24,25 @@ public class SpringDataPagingAndSortingRepositoryExampleApplication {
 		
 		UserPagingAndSortingRepository userPagingAndSortingRepository = applicationContext.getBean(UserPagingAndSortingRepository.class);
 		
-		//List<User> userList =  getUserList();
-		//userPagingAndSortingRepository.saveAll(userList);
+		List<User> userList =  getUserList();
+		//If there is no records in database then insert some records
+		if(userPagingAndSortingRepository.count() == 0) {
+			userPagingAndSortingRepository.saveAll(userList);
+		}
+		
 		System.out.println("Sort by Name & Age----------------------------------------------------");
-		userPagingAndSortingRepository.findAll(Sort.by("name").and(Sort.by("age"))).forEach(System.out::println);
+		userPagingAndSortingRepository.findAll(Sort.by("name").and(Sort.by("age").ascending())).forEach(System.out::println);
 		System.out.println("Sort by Age----------------------------------------------------");
 		userPagingAndSortingRepository.findAll(Sort.by(Order.desc("age"))).forEach(System.out::println);
 		System.out.println("Sort by Name----------------------------------------------------");
 		userPagingAndSortingRepository.findAll(Sort.by(Direction.ASC, "name")).forEach(System.out::println);
+		System.out.println("Pagination------------------------------------------------------------------------------------------------");
+		System.out.println("1st Page with 10 records.....");
+		PageRequest pageRequest = PageRequest.of(0, 10,Sort.by("age").and(Sort.by("name")));
+		userPagingAndSortingRepository.findAll(pageRequest).get().forEach(System.out::println);
+		System.out.println("2nd Page with 10 records.....");
+		PageRequest pageRequest2 = PageRequest.of(1, 10);
+		userPagingAndSortingRepository.findAll(pageRequest2).get().forEach(System.out::println);
 		
 	}
 	
@@ -59,5 +72,4 @@ public class SpringDataPagingAndSortingRepositoryExampleApplication {
 		userList.add(new User("ZK", 34, LocalDate.of(1959, Month.SEPTEMBER, 20)));
 		return userList;
 	}
-
 }

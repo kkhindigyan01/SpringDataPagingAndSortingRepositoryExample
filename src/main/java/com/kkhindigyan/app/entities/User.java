@@ -1,6 +1,5 @@
 package com.kkhindigyan.app.entities;
 
-
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -18,23 +17,23 @@ import org.hibernate.annotations.DynamicUpdate;
 public class User {
 
 	@Id
-	@Column(name =  "id")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-	
-	@Column(name =  "name",nullable = false)
+
+	@Column(name = "name", nullable = false)
 	private String name;
-	
-	@Column(name =  "age",nullable = false)
+
+	@Column(name = "age", nullable = false)
 	private Integer age;
-	
-	@Column(name =  "date_of_birth",nullable = false)
+
+	@Column(name = "date_of_birth", nullable = false)
 	private LocalDate dob;
 
 	public User() {
 
 	}
-	
+
 	public User(String name, Integer age, LocalDate dob) {
 		super();
 		this.name = name;

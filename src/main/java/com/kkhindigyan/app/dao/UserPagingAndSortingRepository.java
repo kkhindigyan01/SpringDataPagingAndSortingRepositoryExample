@@ -1,4 +1,4 @@
-package com.kkhindigyan.app;
+package com.kkhindigyan.app.dao;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
